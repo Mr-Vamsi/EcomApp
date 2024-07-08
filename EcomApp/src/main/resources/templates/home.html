@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Home Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full viewport height */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .user-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+        .user-icon img {
+            vertical-align: middle; /* Align icon vertically */
+            border-radius: 50%; /* Make the icon circular */
+        }
+        .user-options {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+        }
+        .user-options button {
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            text-align: center;
+            text-decoration: none;
+            color: #333333;
+            background-color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 5px; /* Adjust spacing between buttons */
+        }
+        .user-options button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-icon" onclick="toggleUserOptions()">
+        <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" alt="User" width="30" height="30">
+        <p>User</p>
+        <div class="user-options" id="userOptions">
+            <form action="/updateUser" method="post">
+                <button>Update Profile</button>
+            </form>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="Product-options">
+        <button onclick="submitListProductsForm()">List Products</button>
+        <button onclick="submitViewProductsForm()">View Products</button>
+    </div>
+
+    <form id="listProductsForm" action="/listProducts" method="post" style="display: none;">
+        <!-- You can add any hidden inputs or other form elements if needed -->
+    </form>
+
+    <form id="viewProductsForm" action="/viewProducts" method="post" style="display: none;">
+        <!-- You can add any hidden inputs or other form elements if needed -->
+    </form>
+
+    <script>
+        function submitListProductsForm() {
+            document.getElementById("listProductsForm").submit();
+        }
+
+        function submitViewProductsForm() {
+            document.getElementById("viewProductsForm").submit();
+        }
+
+        function toggleUserOptions() {
+            var userOptions = document.getElementById("userOptions");
+            userOptions.style.display = userOptions.style.display === "block" ? "none" : "block";
+        }
+        function logout() {
+            // Redirect or perform any action needed for logging out
+            window.location.href = "/logout";
+        }
+    </script>
+</body>
+</html>

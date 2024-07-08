@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Update User Details</title>
+    <style>
+        /* Basic styling for form layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ccc;
+        }
+        header h2 {
+            margin: 0;
+            text-align: center;
+        }
+        .user-icon {
+            position: relative;
+            cursor: pointer;
+            margin-right: 20px; /* Adjust margin as needed */
+        }
+        .user-icon img {
+            vertical-align: middle; /* Align icon vertically */
+            border-radius: 50%; /* Make the icon circular */
+        }
+        .user-options {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+        }
+        .user-options button {
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            text-align: center;
+            text-decoration: none;
+            color: #333333;
+            background-color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 5px; /* Adjust spacing between buttons */
+        }
+        .user-options button:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Home button styles */
+        .home-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .home-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Form styles */
+        form {
+            width: 50%;
+            margin-top: 80px; /* Adjust top margin for spacing */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 6px 10px; /* Adjust padding for smaller size */
+            width: calc(100% - 40px); /* Adjust input width to accommodate icons */
+            box-sizing: border-box;
+            height: 30px; /* Adjust height for smaller size */
+            font-size: 14px; /* Adjust font size for smaller size */
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px; /* Adjust position as needed */
+            top: calc(50% - 10px); /* Center vertically */
+            transform: translateY(-50%);
+        }
+        .password-toggle img {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+        button.form-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="home-button" onclick="goToHome()">Home</button>
+        <h2>Update User Details</h2>
+        <div class="user-icon" onclick="toggleUserOptions()">
+            <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" width="30" height="30">
+            <span>User</span>
+            <div class="user-options" id="userOptions">
+                <form action="/updateUser" method="post">
+                    <button type="submit">Update</button>
+                </form>
+                <form action="/logout" method="get">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <form id="updateForm" action="/update" method="post">
+        <input type="hidden" id="userId" name="userId" value="1"> <!-- Replace with actual user ID -->
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:placeholder="${email}" readonly><br>
+        
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone"><br>
+        
+        <label for="currentPassword">Current Password:</label>
+        <div style="position: relative;">
+            <input type="password" id="currentPassword" name="currentPassword" required>
+            <div class="password-toggle" onclick="togglePasswordVisibility('currentPassword')">
+                <img src="https://img.icons8.com/material-outlined/24/000000/visible.png"/>
+            </div>
+        </div><br>
+        
+        <label for="updatedPassword">New Password:</label>
+        <div style="position: relative;">
+            <input type="password" id="updatedPassword" name="updatedPassword" required>
+            <div class="password-toggle" onclick="togglePasswordVisibility('updatedPassword')">
+                <img src="https://img.icons8.com/material-outlined/24/000000/visible.png"/>
+            </div>
+        </div><br>
+        
+        <label for="confirmUpdatedPassword">Confirm New Password:</label>
+        <div style="position: relative;">
+            <input type="password" id="confirmUpdatedPassword" name="confirmUpdatedPassword" required>
+            <div class="password-toggle" onclick="togglePasswordVisibility('confirmUpdatedPassword')">
+                <img src="https://img.icons8.com/material-outlined/24/000000/visible.png"/>
+            </div>
+        </div><br>
+        
+        <button class="form-button" type="submit">Update User</button>
+    </form>
+    <p class="error-message" th:text="${message}" th:if="${message != null}"></p>
+    <script>
+        function goToHome() {
+            window.location.href = "/home"; // Replace with your home page URL
+        }
+
+        function toggleUserOptions() {
+            var userOptions = document.getElementById("userOptions");
+            userOptions.style.display = userOptions.style.display === "block" ? "none" : "block";
+        }
+
+        function togglePasswordVisibility(inputId) {
+            var input = document.getElementById(inputId);
+            var icon = document.querySelector(`#${inputId} + .password-toggle img`);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.src = "https://img.icons8.com/material-outlined/24/000000/invisible.png";
+            } else {
+                input.type = "password";
+                icon.src = "https://img.icons8.com/material-outlined/24/000000/visible.png";
+            }
+        }
+    </script>
+</body>
+</html>

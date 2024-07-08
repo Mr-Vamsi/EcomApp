@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>List Products Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-icon, .home-button {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .user-icon img, .home-button img {
+            vertical-align: middle;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .user-options {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        .user-options button {
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            text-align: center;
+            text-decoration: none;
+            color: #333333;
+            background-color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .user-options button:hover {
+            background-color: #e0e0e0;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-container input {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        .home-button {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .home-button img {
+            margin-right: 5px;
+        }
+        .home-button:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="home-button" onclick="goToHome()">
+            <img src="https://cdn-icons-png.flaticon.com/128/25/25694.png" width="30" height="30">
+            <span>Home</span>
+        </div>
+        <div class="user-icon" onclick="toggleUserOptions()">
+            <img src="https://cdn-icons-png.flaticon.com/128/1144/1144760.png" width="30" height="30">
+            <span>User</span>
+            <div class="user-options" id="userOptions">
+                <form action="/updateUser" method="post">
+                    <button type="submit">Update</button>
+                </form>
+                <form action="/logout" method="get">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-container">
+        <h2>List a New Product</h2>
+        <form action="/saveProduct" method="post">
+            <label for="productname">Product Name</label>
+            <input type="text" id="productname" name="productname" required>
+            
+            <label for="productdescription">Product Description</label>
+            <input type="text" id="productdescription" name="productdescription" required>
+            
+            <label for="productquantity">Product Quantity (KGs)</label>
+            <input type="text" id="productquantity" name="productquantity" required>
+            
+            <label for="productcost">Product Cost (RS)</label>
+            <input type="text" id="productcost" name="productcost" required>
+            
+            <button type="submit">List Product</button>
+        </form>
+        <p class="error-message" th:text="${message}" th:if="${message != null}"></p>
+    </div>
+
+    <script>
+        function toggleUserOptions() {
+            var userOptions = document.getElementById("userOptions");
+            userOptions.style.display = userOptions.style.display === "block" ? "none" : "block";
+        }
+
+        function goToHome() {
+            window.location.href = "/home";
+        }
+    </script>
+</body>
+</html>

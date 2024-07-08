@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Registration Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button[type="submit"] {
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration Form</h2>
+        <form action="/reg" method="get">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your name" required>
+            
+            <label for="useremail">Email:</label>
+            <input type="email" id="useremail" name="useremail" placeholder="Enter your email" required>
+            
+            <label for="userphone">Phone:</label>
+            <input type="number" id="userphone" name="userphone" placeholder="Enter your phone number" required>
+            
+            <label for="userpassword">Password:</label>
+            <input type="password" id="userpassword" name="userpassword" placeholder="Enter your password" required>
+            
+            <label for="cnfpassword">Confirm Password:</label>
+            <input type="password" id="cnfpassword" name="cnfpassword" placeholder="Confirm your password" required>
+            
+            <button type="submit">Register</button>
+            
+            <p class="error-message" th:text="${message}" th:if="${message != null}"></p>
+        </form>
+    </div>
+</body>
+</html>

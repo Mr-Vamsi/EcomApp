@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProductsApiApplication<ProductsApi>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.EcomApp.ProductsApi.ProductsApiApplication",
+            "projectName": "ProductsApi",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1905 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=ProductsApi"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EcomAppApplication<EcomApp>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.application.EcomApp.EcomAppApplication",
+            "projectName": "EcomApp",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
