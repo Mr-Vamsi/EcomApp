@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Bill</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .bill-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .bill-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bill-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .bill-header p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+
+        .total {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bill-container">
+        <div class="bill-header">
+            <h1>Receipt</h1>
+            <p>Thank you for your purchase!</p>
+        </div>
+        <table id="cartTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Quantity</th>
+                    <th>Product Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${cartItems}">
+                    <td th:text="${product.productname}"></td>
+                    <td th:text="${product.productquantity}"></td>
+                    <td class="product-cost" th:text="${product.productcost}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="total">Total:</td>
+                    <td id="totalCost" class="total"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        // Calculate total cost dynamically
+        document.addEventListener("DOMContentLoaded", function () {
+            var totalCost = 0;
+            var productCostElements = document.getElementsByClassName("product-cost");
+
+            for (var i = 0; i < productCostElements.length; i++) {
+                totalCost += parseFloat(productCostElements[i].textContent);
+            }
+
+            document.getElementById("totalCost").textContent = totalCost.toFixed(2); // Display total with 2 decimal places
+        });
+    </script>
+</body>
+</html>

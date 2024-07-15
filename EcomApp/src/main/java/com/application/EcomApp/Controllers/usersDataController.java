@@ -1,22 +1,20 @@
 package com.application.EcomApp.Controllers;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.application.EcomApp.DTO.cartItemsDTO;
 import com.application.EcomApp.DTO.productsDataDTO;
 import com.application.EcomApp.Entities.usersData;
-import com.application.EcomApp.RestUtils.restUtils;
 import com.application.EcomApp.Services.userDataService;
-
 import io.restassured.response.Response;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class usersDataController {
@@ -101,6 +99,8 @@ public class usersDataController {
     public String callViewProducts(ModelMap modelMap) {
         Object var = session.getAttribute("sessionVar");
         if (var != null) {
+            int no = service.getNoOfRecordsInTheCart(var.toString());
+            modelMap.addAttribute("NoOfItemsInCart", no);
             List<productsDataDTO> productsList = service.fetchAllProducts();
             modelMap.addAttribute("products", productsList);
             return "productsPage";
@@ -161,7 +161,8 @@ public class usersDataController {
     }
 
     @PostMapping("/saveProduct")
-    public String listProductData(@RequestParam String productname,@RequestParam String productdescription,@RequestParam String productquantity,@RequestParam String productcost, ModelMap modelMap) {
+    public String listProductData(@RequestParam String productname, @RequestParam String productdescription,
+            @RequestParam String productquantity, @RequestParam String productcost, ModelMap modelMap) {
         Object var = session.getAttribute("sessionVar");
         if (var != null) {
             productsDataDTO entity = new productsDataDTO();
@@ -170,11 +171,11 @@ public class usersDataController {
             entity.setProductquantity(productquantity);
             entity.setProductcost(productcost);
             Response response = service.addProduct(entity);
-            if(response!=null){
-                modelMap.addAttribute("Message","Product is added to the Inventory");
+            if (response != null) {
+                modelMap.addAttribute("Message", "Product is added to the Inventory");
                 return "listProductsPage";
-            }else{
-                modelMap.addAttribute("message","Product is not added to the inventory please try again later");
+            } else {
+                modelMap.addAttribute("message", "Product is not added to the inventory please try again later");
                 return null;
             }
         } else {
@@ -183,4 +184,78 @@ public class usersDataController {
         }
     }
 
+    @RequestMapping("/addToCart")
+    public String addProductToCart(@RequestParam("productname") String productname,
+            @RequestParam("productdescription") String productdescription,
+            @RequestParam("productquantity") String productquantity, @RequestParam("productcost") String productcost,
+            ModelMap modelMap) {
+        Object var = session.getAttribute("sessionVar");
+        if (var != null) {
+            List<productsDataDTO> productsList = service.fetchAllProducts();
+            modelMap.addAttribute("products", productsList);
+            int no = service.getNoOfRecordsInTheCart(var.toString());
+            modelMap.addAttribute("NoOfItemsInCart", no);
+            productsDataDTO productDetails = new productsDataDTO();
+            productDetails.setProductname(productname);
+            productDetails.setProductdescription(productdescription);
+            productDetails.setProductquantity(productquantity);
+            productDetails.setProductcost(productcost);
+            Response response = service.addProductToCart(productDetails,var.toString());
+            if (response != null) {
+                return "productsPage";
+            } else {
+                return null;
+            }
+        } else {
+            modelMap.addAttribute("message", "session Expired Please Login to access the application");
+            return "Login";
+        }
+    }
+
+    @RequestMapping("/cartPage")
+    public String getCartPage(ModelMap modelMap) {
+        Object var = session.getAttribute("sessionVar");
+        if (var != null) {
+            List<cartItemsDTO> cartItemsList = service.getAllCartItems(var.toString());
+            if (cartItemsList != null) {
+                modelMap.addAttribute("cartItems", cartItemsList);
+                return "cartPage";
+            } else {
+                return "productsPage";
+            }
+        } else {
+            modelMap.addAttribute("message", "session Expired Please Login to access the application");
+            return "Login";
+        }
+    }
+
+    @RequestMapping("/clearCart")
+    public String clearTheCart(ModelMap modelMap) {
+        Object var = session.getAttribute("sessionVar");
+        if (var != null) {
+            service.clearCart(var.toString());
+            return "cartPage";
+        } else {
+            modelMap.addAttribute("message", "session Expired Please Login to access the application");
+            return "Login";
+        }
+    }
+
+    @RequestMapping("/purchase")
+    public String purchase(ModelMap modelMap) {
+        Object var = session.getAttribute("sessionVar");
+        System.out.println("Session variable "+var);
+        if (var != null) {
+            List<cartItemsDTO> cartItemsList = service.getAllCartItems(var.toString());
+            if (cartItemsList != null) {
+                modelMap.addAttribute("cartItems", cartItemsList);
+                return "bill";
+            } else {
+                return "productsPage";
+            }
+        } else {
+            modelMap.addAttribute("message", "session Expired Please Login to access the application");
+            return "Login";
+        }
+    }
 }

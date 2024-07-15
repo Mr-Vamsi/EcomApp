@@ -20,6 +20,16 @@
             "projectName": "EcomApp",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CartApiApplication<cartApi>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.EcomApp.cartApi.CartApiApplication",
+            "projectName": "cartApi",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

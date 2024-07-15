@@ -15,5 +15,13 @@ CREATE TABLE usersData (
     productcost varchar(50) not null
     )
     select * from products_Data;
-    drop table productsData;
-    
+    drop table products_Data;
+    create table cart(
+    id int auto_increment primary key,
+    productname varchar(50) not null,
+    productquantity varchar(50) not null,
+    productcost varchar(50) not null,
+    status varchar(50) not null
+    )
+    select * from cart;
+    drop table cart;
